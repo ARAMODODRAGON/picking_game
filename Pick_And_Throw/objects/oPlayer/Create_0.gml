@@ -1,6 +1,3 @@
-vspd = 0;
-hspd = 0;
+/// @description Macros
 
-grv = 1;
-fastgrv = 2;
-
+#macro print show_debug_message
