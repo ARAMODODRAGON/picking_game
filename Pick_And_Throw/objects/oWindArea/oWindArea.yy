@@ -42,7 +42,7 @@
             "rangeMax": 10,
             "rangeMin": 0,
             "resourceFilter": 1023,
-            "value": "-1",
+            "value": "-0.22",
             "varName": "vaccel",
             "varType": 0
         },
@@ -56,7 +56,7 @@
             "rangeMax": 10,
             "rangeMin": 0,
             "resourceFilter": 1023,
-            "value": "-9",
+            "value": "-12",
             "varName": "max_vspd",
             "varType": 0
         }
