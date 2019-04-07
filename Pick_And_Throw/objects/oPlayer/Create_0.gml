@@ -3,9 +3,18 @@
 #macro print show_debug_message
 print("");
 
+//PlayerState
+enum playst {
+	transi,
+	contr,
+	picking,
+	holding
+}
+curst = playst.contr;
+
 //Item
 held_item = noone;
-can_pick = true;
+///can_pick = true;
 grab_timer = 0;
 
 //Input
@@ -15,7 +24,7 @@ input_jump = false;
 input_jump_pressed = false;
 input_throw_pressed = false;
 input_throw = false;
-input_throw_released = false;
+//input_throw_released = false;
 
 //Ground and Air
 grounded = false;

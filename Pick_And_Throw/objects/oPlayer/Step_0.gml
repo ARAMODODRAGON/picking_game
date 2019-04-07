@@ -5,12 +5,12 @@
 input_h = keyboard_check(vk_right) - keyboard_check(vk_left);
 input_v = keyboard_check(vk_down) - keyboard_check(vk_up);
 
-input_jump_pressed = keyboard_check_pressed(vk_space);
-input_jump = keyboard_check(vk_space);
+input_jump_pressed = keyboard_check_pressed(ord("C")) || keyboard_check_pressed(vk_space);
+input_jump = keyboard_check(ord("C")) || keyboard_check(vk_space);
 
-input_throw_pressed = keyboard_check_pressed(vk_shift);
-input_throw = keyboard_check(vk_shift);
-input_throw_released = keyboard_check_released(vk_shift);
+input_throw_pressed = keyboard_check_pressed(ord("X")) || keyboard_check_pressed(vk_shift);
+input_throw = keyboard_check(ord("X")) || keyboard_check(vk_shift);
+//input_throw_released = keyboard_check_released(ord("X")) || keyboard_check_released(vk_shift);
 
 //check directly below
 grounded = place_meeting(x, y + 1, oWall) || (place_meeting(x, y + 1, oMovingPlatform) && !place_meeting(x, y, oMovingPlatform));
@@ -21,13 +21,14 @@ grounded = place_meeting(x, y + 1, oWall) || (place_meeting(x, y + 1, oMovingPla
 
 if (grab_timer != 0) {
 	grab_timer--;
-	held_item.x = x;
-	held_item.y = y + 20;
+	held_item.x = x - sign(hsp) * 1.3;
+	held_item.y = y + 20 - sign(hsp) * 1.3;
+	if (grab_timer == 0) curst = playst.holding;
 } else if (held_item != noone) {
 	with (held_item) {
 		//move the object to always be above the players head
 		x = other.x;
-		y = other.y - 16;
+		y = other.y - 20;
 		
 		//if throw is pressed, 
 		//tell the object to throw in the givin direction
@@ -54,13 +55,13 @@ if (grab_timer != 0) {
 		}
 	}
 } else if (held_item == noone) {
-	can_pick = true;
+	curst = playst.contr;
 }
 
 #endregion
 
-if (grab_timer == 0) {
-#region Movement
+if (curst != playst.picking) {
+	#region Movement
 	// test for if floating
 	if (!grounded && vsp >= 0 && input_jump) { 
 		is_floating = true;									
@@ -109,9 +110,9 @@ if (grab_timer == 0) {
 	if (grounded && input_jump_pressed) {
 		vsp = jspd;
 	}
-#endregion
+	#endregion
 
-#region Collision
+	#region Collision
 	if (place_meeting(x + hsp, y, oWall)) {
 		while (!place_meeting(x + sign(hsp), y, oWall)) {
 			x += sign(hsp);
@@ -136,7 +137,7 @@ if (grab_timer == 0) {
 	}
 
 	y += vsp;
-#endregion
+	#endregion
 }
 
 #region Animations
@@ -146,7 +147,7 @@ if (input_h != 0) {
 }
 
 if (grounded) {
-	if (grab_timer > 0) {
+	if (curst == playst.picking) {
 		sprite_index = sPlayer_Pick;
 	} else if (abs(hsp) >= 1) {
 		sprite_index = sPlayer_Walk;
