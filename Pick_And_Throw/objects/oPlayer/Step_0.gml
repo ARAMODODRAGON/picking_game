@@ -13,7 +13,8 @@ input_throw = keyboard_check(ord("X")) || keyboard_check(vk_shift);
 //input_throw_released = keyboard_check_released(ord("X")) || keyboard_check_released(vk_shift);
 
 //check directly below
-grounded = place_meeting(x, y + 1, oWall) || (place_meeting(x, y + 1, oMovingPlatform) && !place_meeting(x, y, oMovingPlatform));
+grounded = place_meeting(x, y + 1, oColliderBase);
+
 #endregion
 
 #region Item Handling
@@ -111,36 +112,20 @@ if (curst != playst.picking) {
 		vsp = jspd;
 	}
 	#endregion
-
-	#region Collision
-	if (place_meeting(x + hsp, y, oWall)) {
-		while (!place_meeting(x + sign(hsp), y, oWall)) {
-			x += sign(hsp);
-		}
-		hsp = 0;
-	}
-
-	x += hsp;
-
-	if (vsp > 0 && !place_meeting(x, y, oMovingPlatform) && place_meeting(x, y + vsp, oMovingPlatform)) {
-		while(!place_meeting(x, y + 1, oMovingPlatform)) {
-			y++;
-		}
-		vsp = 0;
-	}
-
-	if (place_meeting(x, y + vsp, oWall)) {
-		while (!place_meeting(x, y + sign(vsp), oWall)) {
-			y += sign(vsp);
-		}
-		vsp = 0;
-	}
-
-	y += vsp;
-	#endregion
+	
+	move_and_collide(oColliderBase);
 }
 
-#region Animations
+#region Animations and invincibility frames
+//invinciblity frames
+if (invi_frames > 0) invi_frames--;
+
+if (invi_frames == 0) image_alpha = 1;
+else {
+	if (image_alpha <= 0.3) image_alpha = 1;
+	else image_alpha -= 0.1;
+}
+
 //flip players sprite according to the facing direction
 if (input_h != 0) {
 	image_xscale = sign(input_h);	
@@ -174,3 +159,4 @@ if (grounded) {
 }
 
 #endregion
+

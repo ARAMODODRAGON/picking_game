@@ -43,3 +43,7 @@ fastgrv = 1.4;
 jspd = -8;
 max_vspd = 7;
 slowmax_vspd = 1;
+
+//health and i frames
+health = 4;
+invi_frames = 0;
