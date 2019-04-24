@@ -1,2 +1,2 @@
 /// @description destroy on room exit
-instance_destroy(self);
+//instance_destroy(self);
